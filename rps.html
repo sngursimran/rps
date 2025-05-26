@@ -8,11 +8,51 @@
 </head>
 
 <body>
+
+    <ul>
+        <li><button id="rock">rock</button></li>
+        <li><button id="paper">paper</button></li>
+        <li><button id="scissors">scissors</button></li>
+        <div>
+            <strong>Results:</strong>
+        </div>
+    </ul>
+
     <script>
+
+        const list = document.querySelector("ul");
+        list.addEventListener("click", function (event) {
+            if (round<=5) {
+            let clicked = event.target;
+
+            let p_exists = document.querySelector("p");
+            if (p_exists) {
+                p_exists.remove();
+            }
+
+            switch (clicked.id) {
+                case "rock":
+                    callround("rock");
+                    break;
+                case "paper":
+                    callround("paper");
+                    break;
+                case "scissors":
+                    callround("scissors");
+                    break;
+            };
+
+        }
+        else {
+            endGame();
+        }    
+    });
 
         let humanScore = 0;
         let computerScore = 0;
         let drawScore = 0;
+
+        let round = 1;
 
         function getComputerChoice() {
             let computerChoice = Math.random();
@@ -24,11 +64,6 @@
                 default:
                     return "scissors";
             };
-        };
-
-        function getHumanChoice() {
-            let humanChoice = prompt("Enter your choice");
-            return humanChoice.toLowerCase();
         };
 
         function playRound(humanChoice, computerChoice) {
@@ -50,37 +85,35 @@
             };
         };
 
-        function callround() {
+        function callround(humanChoice) {
             let computerChoice = getComputerChoice();
-            let humanChoice = getHumanChoice();
-            console.log("Your choice: " + humanChoice);
             let result = playRound(humanChoice, computerChoice);
-            console.log("Computer choice: " + computerChoice);
-            console.log(result);
+            const div = document.querySelector("div");
+            const p = document.createElement("p");
+            p.textContent = `Your choice: ${humanChoice}
+                             Computer choice: ${computerChoice}
+                             Result: ${result}
+                             Round: ${round}`;
+            div.appendChild(p);
+            round++
         }
 
-        function PlayGame() {
-            for (let i = 1; i <= 5; i++) {
-                console.log("Round " + i + ":");
-                callround();
-            }
-            console.log("Your total score: " + humanScore);
-            console.log("Computer's total score: " + computerScore);
-
+        function endGame() {
+            const p = document.querySelector("p");
             switch (true) {
                 case humanScore == computerScore:
-                    console.log("Draw Game");
+                    p.textContent = "Game Draw!"
                     break;
                 case humanScore > computerScore:
-                    console.log("You Win the Game!");
+                    p.textContent = "You Win";
                     break;
                 case humanScore < computerScore:
-                    console.log("You Lose the Game!");
+                    p.textContent = "You lose!"
                     break;
             }
-        }
-
-        PlayGame();
+            round = 0;
+        };
+        
     </script>
 </body>
 
